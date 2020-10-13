@@ -19,7 +19,7 @@ jobs:
       run:  docker build -t n64sdk https://github.com/CrashOveride95/n64sdkmod.git
     
     - name: Build
-      run: docker run --name n64sdk-instance -e N64_LIBGCCDIR="/usr/local/n64chain/lib/gcc/mips64-elf/10.2.0" -v "$(pwd)":/opt/src -r n64sdk /opt/src/compile_docker.sh
+      run: docker run --name n64sdk-instance -e N64_LIBGCCDIR="/usr/local/n64chain/lib/gcc/mips64-elf/10.2.0" -v "$(pwd)":/opt/src n64sdk /opt/src/compile_docker.sh
 
     - name: Cleanup
       run: docker rm n64sdk-instance
