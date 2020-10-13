@@ -1,26 +1,22 @@
 include_directories(
 	${N64_NEWLIBINCDIR}/
-	$ENV{ROOT}/usr/include/PR/
 	$ENV{ROOT}/usr/include/
-	/usr/include/n64/nusys
+	$ENV{ROOT}/usr/include/nusys
+	$ENV{ROOT}/usr/include/PR/
 )
 
 link_directories(
 	${N64_NEWLIBDIR}/
 	$ENV{ROOT}/usr/lib
 	$ENV{ROOT}/usr/lib/nusys
-)
-
-link_libraries(
-	ultra_rom
-	nusys
+	$ENV{ROOT}/usr/lib/PR/
 )
 
 #set(N64SDK_C_FLAGS "-D_MIPS_SZLONG=32 -D_MIPS_SZINT=32 -D_LANGUAGE_C -D_ULTRA64 -D__EXTENSIONS__ -fno-PIC -mabi=32 -mno-shared -mno-abicalls -DF3DEX_GBI_2")
 #set(N64SDK_ASM_FLAGS "-x assembler-with-cpp -fno-PIC -mabi=32 -mno-shared -mno-abicalls" )
 
-set(N64SDK_C_FLAGS "-mabi=32 -mno-shared -mno-abicalls")
-set(N64SDK_ASM_FLAGS "assembler-with-cpp -fno-PIC -mabi=32 -mno-shared -mno-abicalls" )
+set(N64SDK_C_FLAGS "-mabi=32 -mno-shared -mno-abicalls --specs=nosys.specs")
+set(N64SDK_ASM_FLAGS " -fno-PIC -mabi=32 -mno-shared -mno-abicalls" )
 
 # Extra util definition from N64SDK
 set(FLT2C flt2c)

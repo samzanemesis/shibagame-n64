@@ -14,6 +14,7 @@ set( ROM_NAME 			${PROJECT_NAME}.n64 )
 file(GLOB_RECURSE SHIBAGAME_SOURCES
 	${PROJECT_SOURCE_DIR}/*.c
 	${PROJECT_SOURCE_DIR}/*.cpp
+	${PROJECT_SOURCE_DIR}/*.cc
 )
 file(GLOB_RECURSE SHIBAGAME_INCLUDE
 	${PROJECT_SOURCE_DIR}/*.h
@@ -21,14 +22,26 @@ file(GLOB_RECURSE SHIBAGAME_INCLUDE
 
 add_executable( ${ELF_NAME}
 	${SHIBAGAME_SOURCES}
-)
 
+)
 target_include_directories( ${ELF_NAME}
 	PUBLIC
 )
 
-#Run our custom linker
-#include $(COMMONRULES)
+# Microcode BS
+set(N64_MICROCODE_DIR $ENV{ROOT}/usr/lib/PR/)
+target_link_libraries( ${ELF_NAME} 
+	${N64_MICROCODE_DIR}/rspboot.o
+	${N64_MICROCODE_DIR}/gspF3DEX2.fifo.o
+	${N64_MICROCODE_DIR}/gspL3DEX2.fifo.o
+	${N64_MICROCODE_DIR}/gspF3DEX2.Rej.fifo.o
+	${N64_MICROCODE_DIR}/gspF3DEX2.NoN.fifo.o
+	${N64_MICROCODE_DIR}/gspF3DLX2.Rej.fifo.o
+	${N64_MICROCODE_DIR}/gspS2DEX2.fifo.o
+	nusys
+	ultra_rom
+)
+
 
 #add_custom_command(TARGET ${ELF_NAME}
 #                  POST_BUILD
