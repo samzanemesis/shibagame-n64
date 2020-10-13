@@ -19,13 +19,13 @@ jobs:
       run:  docker build -t n64sdk https://github.com/CrashOveride95/n64sdkmod.git
     
     - name: Build
-      run: docker run --name n64sdk-instance -e N64_LIBGCCDIR="/usr/local/n64chain/lib/gcc/mips64-elf/10.2.0" -e DEBIAN_FRONTEND="noninteractive" -v "$(pwd)":/opt/src n64sdk /opt/src/compile_docker.sh
+      run: docker run --name n64sdk-instance -e N64_LIBGCCDIR="/usr/local/n64chain/lib/gcc/mips64-elf/10.2.0" -e DEBIAN_FRONTEND="noninteractive" -v "${{ github.workspace }}":/opt/src n64sdk /opt/src/compile_docker.sh
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: shibagame
-        path: build/shibagame.n64
+        path: build/*.n64
 
     - name: Cleanup
       run: docker rm n64sdk-instance
@@ -34,8 +34,8 @@ jobs:
     needs: build
     steps:
       - name: Setup Test Env
-        run: 
-          apt install xvfb mupen64plus wget unzip
+        run: |
+          sudo apt install -y xvfb mupen64plus wget unzip
           wget https://cen64.com/uploads/stable/cen64-debian9-x86_64
           wget https://www.dropbox.com/sh/i0klk7ytso6homa/AACL4NiXIauDH6uRbdwBL7mha/N64%20BIOS.zip?dl=0
           unzip N64\ Bios.zip
