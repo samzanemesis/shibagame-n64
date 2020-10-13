@@ -24,7 +24,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: shibagame
+        name: Shibagame Build ${{ github.run_number }}
         path: build/*.n64
 
     - name: Cleanup
@@ -33,18 +33,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Setup Test Env
+      - name: Download game artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Get Test Prerequisites
         run: |
+          sudo add-apt-repository universe
+          sudo apt update
           sudo apt install -y xvfb mupen64plus wget unzip
           wget https://cen64.com/uploads/stable/cen64-debian9-x86_64
           wget https://www.dropbox.com/sh/i0klk7ytso6homa/AACL4NiXIauDH6uRbdwBL7mha/N64%20BIOS.zip?dl=0
-          unzip N64\ Bios.zip
+          
+          
+      - name: Setup Test Env
+        run: |
+          unzip *.zip
           chmod +x cen64-debian9-x86_64
           Xvfb :100 &
           export DISPLAY=:100
 
+      # Eventually change these to check for a BOOT SUCCESS case in conout rather than
+      # Just checking if it crashed or not
       - name: test-cen64
-        run: echo "Test with Cen64 here"
+        run: timeout 15 cen64-debian9-x86_64 pifdata.bin SHIBAGAME.n64
         
       - name: test-mupen64
-        run: echo "Test with Mupen64 here"
+        run: timeou5 15 mupen64plus SHIBAGAME.n64
