@@ -38,9 +38,8 @@ jobs:
 
       - name: Get Test Prerequisites
         run: |
-          sudo add-apt-repository universe
           sudo apt update
-          sudo apt install -y xvfb mupen64plus wget unzip
+          sudo apt install -y xvfb wget unzip
           wget https://cen64.com/uploads/stable/cen64-debian9-x86_64
           wget https://www.dropbox.com/sh/i0klk7ytso6homa/AACL4NiXIauDH6uRbdwBL7mha/N64%20BIOS.zip?dl=0
           
@@ -57,5 +56,5 @@ jobs:
       - name: test-cen64
         run: timeout 15 cen64-debian9-x86_64 pifdata.bin SHIBAGAME.n64
         
-      - name: test-mupen64
-        run: timeou5 15 mupen64plus SHIBAGAME.n64
+      #- name: test-mupen64
+      #  run: timeou5 15 mupen64plus SHIBAGAME.n64
